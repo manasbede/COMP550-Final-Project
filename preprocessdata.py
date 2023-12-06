@@ -56,11 +56,8 @@ def pre_process(data_list):
     data_after_stop_word_remove = [remove_stop_words(data) for data in data_list_after_punct_remove]
     print(data_after_stop_word_remove[0])
     data_after_lemmatization = [lemmatization(data) for data in data_after_stop_word_remove]
-    print()
-    print(data_after_lemmatization[0])
-    
+    return data_after_lemmatization
 
 if __name__ == "__main__":
     train_texts, train_labels = read_data_from_folders('training')
     test_texts, test_labels = read_data_from_folders('test')
-    pre_process(train_texts)
