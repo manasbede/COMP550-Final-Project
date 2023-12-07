@@ -53,6 +53,9 @@ class LSTM_Model():
         y_test = self.label_encoder.fit_transform(test_labels)
         score, acc = self.model.evaluate(new_padded_sequences, y_test, verbose=2)
         return acc
+    
+    def save(self):
+        self.model.save("lstm.keras")
 
 
 class LSTM_Model_WE():
@@ -65,7 +68,7 @@ class LSTM_Model_WE():
         self.label_encoder = LabelEncoder()
         self.glove_path = 'glove.6B.300d.txt' 
 
-    def load_glove_vectors(file_path):
+    def load_glove_vectors(self,file_path):
         with open(file_path, 'r', encoding='utf-8') as file:
             embeddings_index = {}
             for line in file:
@@ -77,14 +80,16 @@ class LSTM_Model_WE():
 
     def fit(self,train_texts, train_labels):
         # Tokenize and preprocess the text data
-        glove_vectors = self.load_glove_vectors(self.glove_path)
-        num_words = len(self.tokenizer.word_index) + 1
-        embedding_matrix = np.zeros((num_words, self.embedding_dim))
-
+        
         self.tokenizer.fit_on_texts(train_texts)
         X_train = self.tokenizer.texts_to_sequences(train_texts)
         X_train = pad_sequences(X_train)
         y_train = self.label_encoder.fit_transform(train_labels)
+
+        path=self.glove_path
+        glove_vectors = self.load_glove_vectors(path)
+        num_words = len(self.tokenizer.word_index) + 1
+        embedding_matrix = np.zeros((num_words, self.embedding_dim))
 
         self.max_sequence_length = max(len(seq) for seq in X_train)
 
@@ -110,6 +115,9 @@ class LSTM_Model_WE():
         y_test = self.label_encoder.fit_transform(test_labels)
         score, acc = self.model.evaluate(new_padded_sequences, y_test, verbose=2)
         return acc
+    
+    def save(self):
+        self.model.save("lstm_we.keras")
 
 if __name__ == "__main__":
     train_df=pd.read_csv('Train.csv')
@@ -133,3 +141,4 @@ if __name__ == "__main__":
     model.fit(train_texts,train_labels)
     accuracy=model.predict(test_texts, test_labels)
     print(f'Test accuracy: {accuracy * 100:.2f}%')
+    model.save()
