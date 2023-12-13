@@ -197,6 +197,8 @@ class CNN_LSTM():
         self.print_log(log_id, predictions, y_test)
 
         print('Test accuracy:', acc[1])
+
+        model.save("CNN_LSTM.keras")
         return acc
 
 

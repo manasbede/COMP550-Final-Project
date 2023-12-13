@@ -53,7 +53,7 @@ class LSTM_with_Attention():
         self.model.compile(loss='sparse_categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
 
         batch_size = 32
-        epochs = 10
+        epochs = 4
 
         # checkpoint_filepath = '/content/drive/MyDrive/COMP550/checkpoint.model'
         # model_checkpoint_callback = tf.keras.callbacks.ModelCheckpoint(
@@ -72,6 +72,9 @@ class LSTM_with_Attention():
         score, acc = self.model.evaluate(new_padded_sequences, y_test, verbose=2)
         return acc
 
+    def save(self):
+        self.model.save("lstm_att.keras")
+
 
 class LSTM_with_Attention_WE():
     def __init__(self):
@@ -83,7 +86,7 @@ class LSTM_with_Attention_WE():
         self.label_encoder = LabelEncoder()
         self.glove_path = 'glove.6B.300d.txt'
 
-    def load_glove_vectors(file_path):
+    def load_glove_vectors(self,file_path):
         with open(file_path, 'r', encoding='utf-8') as file:
             embeddings_index = {}
             for line in file:
@@ -95,14 +98,16 @@ class LSTM_with_Attention_WE():
 
     def fit(self, train_texts, train_labels):
         # Tokenize text data
-        glove_vectors = self.load_glove_vectors(self.glove_path)
-        num_words = len(self.tokenizer.word_index) + 1
-        embedding_matrix = np.zeros((num_words, self.embedding_dim))
+        path=self.glove_path
+        glove_vectors = self.load_glove_vectors(path)
 
         self.tokenizer.fit_on_texts(train_texts)
         X_train = self.tokenizer.texts_to_sequences(train_texts)
         X_train = pad_sequences(X_train)
         y_train = self.label_encoder.fit_transform(train_labels)
+
+        num_words = len(self.tokenizer.word_index) + 1
+        embedding_matrix = np.zeros((num_words, self.embedding_dim))
 
         for word, i in self.tokenizer.word_index.items():
             if word in glove_vectors:
@@ -125,7 +130,7 @@ class LSTM_with_Attention_WE():
         self.model.compile(loss='sparse_categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
 
         batch_size = 32
-        epochs = 10
+        epochs = 4
 
         # checkpoint_filepath = '/content/drive/MyDrive/COMP550/checkpoint.model'
         # model_checkpoint_callback = tf.keras.callbacks.ModelCheckpoint(
@@ -143,6 +148,9 @@ class LSTM_with_Attention_WE():
         y_test = self.label_encoder.fit_transform(test_labels)
         score, acc = self.model.evaluate(new_padded_sequences, y_test, verbose=2)
         return acc
+
+    def save(self):
+        self.model.save("lstm_att_we.keras")
 
 if __name__ == "__main__":
     train_df=pd.read_csv('Train.csv')
