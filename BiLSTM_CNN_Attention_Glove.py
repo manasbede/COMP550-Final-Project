@@ -51,7 +51,7 @@ class LSTM_CNN_Attention_Glove:
 
         vocab_size = len(self.tokenizer.word_index) + 1
 
-        embedding_layer = Embedding(vocab_size, embedding_dim, weights=[embedding_matrix], input_length=max_length,
+        embedding_layer = Embedding(vocab_size, self.embedding_dim, weights=[embedding_matrix], input_length=self.max_words,
                                     trainable=False)
         self.model.add(embedding_layer)
         self.model.add(Dropout(0.5))
