@@ -1,9 +1,9 @@
 Test.py
 ohsumed-first-20000-docs
-# User-specific stuff:
-.idea/workspace.xml
-.idea/tasks.xml
-.idea/dictionaries
-.idea/vcs.xml
-.idea/*
-.gitignore
+glove.6B.50d.txt
+glove.6B.200d.vec.txt
+glove.6B.300d.txt
+tmp.txt
+memory_logs.txt
+main_logs.txt
+*.keras
