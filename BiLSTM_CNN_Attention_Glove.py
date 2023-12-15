@@ -16,7 +16,7 @@ class LSTM_CNN_Attention_Glove:
     def __init__(self):
         self.embedding_dim = 300
         self.lstm_out = 296
-        self.max_words = 10000
+        self.max_words = 350
         self.tokenizer = Tokenizer(num_words=self.max_words, split=' ')
         self.model = Sequential()
         self.label_encoder = LabelEncoder()
@@ -39,7 +39,7 @@ class LSTM_CNN_Attention_Glove:
 
         self.tokenizer.fit_on_texts(train_texts)
         X_train = self.tokenizer.texts_to_sequences(train_texts)
-        X_train = pad_sequences(X_train)
+        X_train = pad_sequences(X_train, maxlen=self.max_words)
         y_train = self.label_encoder.fit_transform(train_labels)
 
         num_words = len(self.tokenizer.word_index) + 1
@@ -72,7 +72,7 @@ class LSTM_CNN_Attention_Glove:
         # Use GlobalAveragePooling1D to get a fixed-size output regardless of the sequence length
         self.model.add(GlobalAveragePooling1D())
         self.model.add(Dense(len(np.unique(train_labels)), activation='softmax'))
-        self.model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
+        self.model.compile(loss='sparse_categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
 
         batch_size = 32
         epochs = 10

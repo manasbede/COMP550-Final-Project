@@ -31,7 +31,7 @@ sentence_lengths = train_df['Length'].value_counts().sort_index()
 # Plotting
 plt.figure(figsize=(10, 6))
 plt.bar(sentence_lengths.index, sentence_lengths.values, color='skyblue')
-plt.xlabel('Length of Sentences')
+plt.xlabel('Length of Sentences in terms of word')
 plt.ylabel('Number of Sentences')
 plt.grid(axis='y')
 plt.show()
