@@ -20,7 +20,7 @@ class LSTM_CNN_Attention_Glove:
         self.tokenizer = Tokenizer(num_words=self.max_words, split=' ')
         self.model = Sequential()
         self.label_encoder = LabelEncoder()
-        self.glove_path = '/content/drive/MyDrive/glove.6B.300d.txt'
+        self.glove_path = 'D:\\Fall2023\\COMP550 NLP\\Project\\NLP550Project\\glove.6B.300d.txt'
 
     def load_glove_vectors(self, file_path):
         with open(file_path, 'r', encoding='utf-8') as file:
@@ -75,7 +75,7 @@ class LSTM_CNN_Attention_Glove:
         self.model.compile(loss='sparse_categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
 
         batch_size = 32
-        epochs = 10
+        epochs = 1
         self.model.fit(X_train, y_train, epochs=epochs, batch_size=batch_size, validation_split=0.1)
 
     def predict(self, test_data, test_labels):
@@ -85,14 +85,17 @@ class LSTM_CNN_Attention_Glove:
         score, acc = self.model.evaluate(new_padded_sequences, y_test, verbose=2)
         return acc
 
+    def save(self):
+        self.model.save("D:\\Fall2023\\COMP550 NLP\\Project\\NLP550Project\\trained-models\\bilstm_cnn_att_we.keras")
+
 
 if __name__ == "__main__":
-    train_df = pd.read_csv('/content/drive/MyDrive/Train.csv')
+    train_df = pd.read_csv('D:\\Fall2023\\COMP550 NLP\\Project\\NLP550Project\\Train.csv')
     train_df = train_df.sample(frac=1)
     train_texts = train_df['Text'].values
     train_labels = train_df['Label'].values
 
-    test_df = pd.read_csv('/content/drive/MyDrive/Test.csv')
+    test_df = pd.read_csv('D:\\Fall2023\\COMP550 NLP\\Project\\NLP550Project\\Test.csv')
     test_df = test_df.sample(frac=1)
     test_texts = test_df['Text'].values
     test_labels = test_df['Label'].values
@@ -101,4 +104,5 @@ if __name__ == "__main__":
     model = LSTM_CNN_Attention_Glove()
     model.fit(train_texts, train_labels)
     accuracy = model.predict(test_texts, test_labels)
+    model.save()
     print(f'Test accuracy: {accuracy * 100:.2f}%')
