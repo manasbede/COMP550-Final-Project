@@ -282,4 +282,4 @@ if __name__ == "__main__":
         preds = torch.argmax(logits, dim=1).detach().cpu().numpy()
         predictions.append(preds)
     pred = [j for sub in predictions for j in sub]
-    print("Train set accuracy : ", accuracy_score(np.asarray(test_labels_top10), np.asarray(pred)))
+    print("Test set accuracy : ", accuracy_score(np.asarray(test_labels_top10), np.asarray(pred)))
