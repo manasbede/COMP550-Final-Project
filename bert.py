@@ -51,7 +51,7 @@ class BERT:
 
         optimizer = AdamW(self.bert_model.parameters(), lr=self.learning_rate)
         for epoch in range(self.epochs):
-            self.bert_model.model.train()
+            self.bert_model.train()
             total_loss = 0
             for batch in train_loader:
                 input_ids = batch['input_ids'].to(self.device)
@@ -113,11 +113,11 @@ class BERT:
 
 
 if __name__ == "__main__":
-    train_df = pd.read_csv('/content/drive/MyDrive/Train.csv')
+    train_df = pd.read_csv('D:\\Fall2023\\COMP550 NLP\\Project\\NLP550Project\\Train.csv')
     train_texts = train_df['Text'].values
     train_labels = train_df['Label'].values
 
-    test_df = pd.read_csv('/content/drive/MyDrive/Test.csv')
+    test_df = pd.read_csv('D:\\Fall2023\\COMP550 NLP\\Project\\NLP550Project\\Test.csv')
     test_texts = test_df['Text'].values
     test_labels = test_df['Label'].values
 

@@ -25,15 +25,15 @@ class BiLSTM_CNN_with_Attention_W2Vec:
         self.label_encoder = LabelEncoder()
 
     def fit(self, train_texts, train_labels):
-        word_vectors = Word2Vec.load('/content/word2vec_weights.bin')
+        word_vectors = Word2Vec.load('/content/drive/MyDrive/word2vec_model.bin')
+        embedding_dim = word_vectors.vector_size
 
-        tokenizer = Tokenizer()
-        tokenizer.fit_on_texts(train_texts)
+        self.tokenizer.fit_on_texts(train_texts)
 
-        vocab_size = len(tokenizer.word_index) + 1
+        vocab_size = len(self.tokenizer.word_index) + 1
 
         # Convert text to sequences
-        sequences = tokenizer.texts_to_sequences(train_texts)
+        sequences = self.tokenizer.texts_to_sequences(train_texts)
 
         # Padding sequences to a fixed length
         max_length = 2000  # Adjust as needed
@@ -45,7 +45,7 @@ class BiLSTM_CNN_with_Attention_W2Vec:
 
         # Embedding layer using pretrained Word2Vec weights
         embedding_matrix = np.zeros((vocab_size, embedding_dim))
-        for word, i in tokenizer.word_index.items():
+        for word, i in self.tokenizer.word_index.items():
             if word in word_vectors.wv:
                 embedding_matrix[i] = word_vectors.wv[word]
 
@@ -78,10 +78,13 @@ class BiLSTM_CNN_with_Attention_W2Vec:
 
     def predict(self, test_data, test_labels):
         new_sequences = self.tokenizer.texts_to_sequences(test_data)
-        new_padded_sequences = pad_sequences(new_sequences)
-        y_test = self.label_encoder.fit_transform(test_labels)
+        new_padded_sequences = pad_sequences(new_sequences, maxlen=2000)
+        y_test = np.eye(23)[test_labels]
         score, acc = self.model.evaluate(new_padded_sequences, y_test, verbose=2)
         return acc
+
+    def save(self):
+        self.model.save("bilstm_cnn_att_w2v_we.keras")
 
 
 if __name__ == "__main__":
