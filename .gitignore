@@ -1,2 +1,13 @@
-LSTM_implementation (1).ipynb
-LSTM.py
+Test.py
+ohsumed-first-20000-docs
+glove.6B.50d.txt
+glove.6B.200d.vec.txt
+glove.6B.300d.txt
+tmp.txt
+memory_logs.txt
+main_logs.txt
+*.keras
+*.hdf5
+*.txt
+*.bin
+*.npy
