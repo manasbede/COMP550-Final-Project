@@ -44,7 +44,7 @@ class BERT:
         self.epochs = epochs
         self.learning_rate = learning_rate
         self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-        self.bert_model = BertForSequenceClassification.from_pretrained('bert-base-uncased', num_labels=num_classes)
+        self.bert_model = BertForSequenceClassification.from_pretrained('bert-base-uncased', num_labels=23)
 
     def fit(self, train_loader):
         self.bert_model.to(self.device)
@@ -68,7 +68,7 @@ class BERT:
 
             print(f"Epoch {epoch + 1}/{self.epochs}, Loss: {total_loss:.4f}")
 
-        torch.save(self.bert_model.state_dict(), '/content/drive/MyDrive/weights')
+        torch.save(self.bert_model.state_dict(), 'weights')
 
     def predict(self, test_loader):
         predictions = []
@@ -113,11 +113,11 @@ class BERT:
 
 
 if __name__ == "__main__":
-    train_df = pd.read_csv('D:\\Fall2023\\COMP550 NLP\\Project\\NLP550Project\\Train.csv')
+    train_df = pd.read_csv('Train.csv')
     train_texts = train_df['Text'].values
     train_labels = train_df['Label'].values
 
-    test_df = pd.read_csv('D:\\Fall2023\\COMP550 NLP\\Project\\NLP550Project\\Test.csv')
+    test_df = pd.read_csv('Test.csv')
     test_texts = test_df['Text'].values
     test_labels = test_df['Label'].values
 

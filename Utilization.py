@@ -45,4 +45,4 @@ def main(pid):
 
 if __name__ == "__main__":
     pid = os.getpid()
-    main(26224)
+    main(10556)

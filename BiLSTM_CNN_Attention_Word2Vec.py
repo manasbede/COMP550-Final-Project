@@ -1,6 +1,7 @@
 import nltk
+import os
 
-nltk.download('punkt')
+#nltk.download('punkt')
 
 import numpy as np
 from sklearn.preprocessing import LabelEncoder
@@ -25,8 +26,7 @@ class BiLSTM_CNN_with_Attention_W2Vec:
         self.label_encoder = LabelEncoder()
 
     def fit(self, train_texts, train_labels):
-        word_vectors = Word2Vec.load('/content/drive/MyDrive/word2vec_model.bin')
-        embedding_dim = word_vectors.vector_size
+        word_vectors = Word2Vec.load('word2vec_model.bin')
 
         self.tokenizer.fit_on_texts(train_texts)
 
@@ -88,12 +88,15 @@ class BiLSTM_CNN_with_Attention_W2Vec:
 
 
 if __name__ == "__main__":
-    train_df = pd.read_csv('/content/drive/MyDrive/Train.csv')
+
+    print(os.getpid())
+
+    train_df = pd.read_csv('Train.csv')
     train_df = train_df.sample(frac=1)
     train_texts = train_df['Text'].values
     train_labels = train_df['Label'].values
 
-    test_df = pd.read_csv('/content/drive/MyDrive/Test.csv')
+    test_df = pd.read_csv('Test.csv')
     test_df = test_df.sample(frac=1)
     test_texts = test_df['Text'].values
     test_labels = test_df['Label'].values
@@ -118,7 +121,7 @@ if __name__ == "__main__":
     word2vec_model.save("word2vec_model.bin")
 
     # Load pre-trained Word2Vec model
-    word2vec_model = Word2Vec.load('/content/drive/MyDrive/word2vec_model.bin')
+    word2vec_model = Word2Vec.load('word2vec_model.bin')
     embedding_dim = word2vec_model.vector_size
 
     model = BiLSTM_CNN_with_Attention_W2Vec()

@@ -5,7 +5,7 @@ from sklearn.preprocessing import LabelEncoder
 from tensorflow.keras.layers import GlobalAveragePooling1D
 from tensorflow.keras.models import Sequential
 
-nltk.download('punkt')
+#nltk.download('punkt')
 import numpy as np
 from keras.layers import Embedding, Conv1D, MaxPooling1D, Bidirectional, LSTM, Dense, Dropout
 from keras.preprocessing.text import Tokenizer
@@ -20,7 +20,7 @@ class LSTM_CNN_Attention_Glove:
         self.tokenizer = Tokenizer(num_words=self.max_words, split=' ')
         self.model = Sequential()
         self.label_encoder = LabelEncoder()
-        self.glove_path = 'D:\\Fall2023\\COMP550 NLP\\Project\\NLP550Project\\glove.6B.300d.txt'
+        self.glove_path = 'glove.6B.300d.txt'
 
     def load_glove_vectors(self, file_path):
         with open(file_path, 'r', encoding='utf-8') as file:
@@ -90,12 +90,12 @@ class LSTM_CNN_Attention_Glove:
 
 
 if __name__ == "__main__":
-    train_df = pd.read_csv('D:\\Fall2023\\COMP550 NLP\\Project\\NLP550Project\\Train.csv')
+    train_df = pd.read_csv('Train.csv')
     train_df = train_df.sample(frac=1)
     train_texts = train_df['Text'].values
     train_labels = train_df['Label'].values
 
-    test_df = pd.read_csv('D:\\Fall2023\\COMP550 NLP\\Project\\NLP550Project\\Test.csv')
+    test_df = pd.read_csv('Test.csv')
     test_df = test_df.sample(frac=1)
     test_texts = test_df['Text'].values
     test_labels = test_df['Label'].values

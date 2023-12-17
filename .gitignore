@@ -7,3 +7,7 @@ tmp.txt
 memory_logs.txt
 main_logs.txt
 *.keras
+*.hdf5
+*.txt
+*.bin
+*.npy
