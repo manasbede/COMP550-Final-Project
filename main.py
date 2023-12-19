@@ -1,7 +1,7 @@
 from BiLSTM_Attention import BiLSTM_with_Attention, BiLSTM_with_Attention_WE
 from BiLSTM_CNN_Attention_Glove import LSTM_CNN_Attention_Glove
 from bert import BERT
-from lstm import LSTM_Model, LSTM_Model_WE
+from LSTM import LSTM_Model, LSTM_Model_WE
 from LSTM_Attention import LSTM_with_Attention, LSTM_with_Attention_WE
 from LSTM_CNN import CNN_LSTM
 import preprocessdata
