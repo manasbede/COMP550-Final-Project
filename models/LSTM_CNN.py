@@ -8,15 +8,12 @@ from keras.models import Sequential
 from keras.layers import Dense, Dropout, Activation
 from keras.layers import Embedding
 from keras.layers import LSTM
-import prepare_dataset as dataset
+from dataset import prepare_dataset as dataset
 from keras.layers import MaxPooling1D
 from keras.layers import Conv1D
 from keras import utils
-from keras.callbacks import ModelCheckpoint, EarlyStopping
 from keras import losses
 from keras import optimizers
-import h5py
-import argparse
 import os
 
 
@@ -42,11 +39,11 @@ class CNN_LSTM():
         dname = os.path.dirname(abspath)
         os.chdir(dname)
 
-        if not os.path.exists("models/"):
-            os.makedirs("models/")
+        if not os.path.exists("/"):
+            os.makedirs("/")
 
-        if not os.path.exists("logs-pred/"):
-            os.makedirs("logs-pred/")
+        if not os.path.exists("../logs-pred/"):
+            os.makedirs("../logs-pred/")
 
 
         print(params)

@@ -113,11 +113,11 @@ class BERT:
 
 
 if __name__ == "__main__":
-    train_df = pd.read_csv('Train.csv')
+    train_df = pd.read_csv('../Train.csv')
     train_texts = train_df['Text'].values
     train_labels = train_df['Label'].values
 
-    test_df = pd.read_csv('Test.csv')
+    test_df = pd.read_csv('../Test.csv')
     test_texts = test_df['Text'].values
     test_labels = test_df['Label'].values
 

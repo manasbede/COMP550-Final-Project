@@ -1,19 +1,15 @@
 import numpy as np
-from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import LabelEncoder
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Embedding, SpatialDropout1D, LSTM, Dense, Attention, GlobalAveragePooling1D
-from keras_self_attention import SeqSelfAttention  # Import the attention layer
-from tensorflow.keras.optimizers import Adam
-from tensorflow.keras.preprocessing.text import Tokenizer
-from tensorflow.keras.preprocessing.sequence import pad_sequences
-import tensorflow as tf
 import pandas as pd
-import preprocessdata
-from sklearn.metrics import accuracy_score
+from keras.src.layers import Bidirectional
+from keras_self_attention import SeqSelfAttention  # Import the attention layer
+from sklearn.preprocessing import LabelEncoder
+from tensorflow.keras.layers import Embedding, SpatialDropout1D, LSTM, Dense, GlobalAveragePooling1D
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.preprocessing.sequence import pad_sequences
+from tensorflow.keras.preprocessing.text import Tokenizer
 
 
-class LSTM_with_Attention():
+class BiLSTM_with_Attention():
     def __init__(self):
         self.embedding_dim = 128
         self.lstm_out = 196
@@ -40,7 +36,7 @@ class LSTM_with_Attention():
         self.model.add(SpatialDropout1D(0.2))
 
         # Add LSTM layer with return_sequences=True to get the sequence output
-        self.model.add(LSTM(self.lstm_out, dropout=0.2, recurrent_dropout=0.2, return_sequences=True))
+        self.model.add(Bidirectional(LSTM(self.lstm_out, dropout=0.2, recurrent_dropout=0.2, return_sequences=True)))
 
         # Add Attention layer
         self.model.add(SeqSelfAttention(attention_activation='sigmoid'))
@@ -76,7 +72,7 @@ class LSTM_with_Attention():
         self.model.save("lstm_att.keras")
 
 
-class LSTM_with_Attention_WE():
+class BiLSTM_with_Attention_WE():
     def __init__(self):
         self.embedding_dim = 300
         self.lstm_out = 296
@@ -117,7 +113,7 @@ class LSTM_with_Attention_WE():
         self.model.add(SpatialDropout1D(0.2))
 
         # Add LSTM layer with return_sequences=True to get the sequence output
-        self.model.add(LSTM(self.lstm_out, dropout=0.2, recurrent_dropout=0.2, return_sequences=True))
+        self.model.add(Bidirectional(LSTM(self.lstm_out, dropout=0.2, recurrent_dropout=0.2, return_sequences=True)))
 
         # Add Attention layer
         self.model.add(SeqSelfAttention(attention_activation='sigmoid'))
@@ -153,24 +149,24 @@ class LSTM_with_Attention_WE():
         self.model.save("lstm_att_we.keras")
 
 if __name__ == "__main__":
-    train_df=pd.read_csv('Train.csv')
+    train_df=pd.read_csv('../Train.csv')
     train_df = train_df.sample(frac = 1)
     train_texts=train_df['Text'].values
     train_labels=train_df['Label'].values
 
-    test_df=pd.read_csv('Test.csv')
+    test_df=pd.read_csv('../Test.csv')
     test_df = test_df.sample(frac = 1)
     test_texts=test_df['Text'].values
     test_labels=test_df['Label'].values
 
-    print("Implementing LSTM with Attention Model")
-    model = LSTM_with_Attention()
+    print("Implementing BiLSTM with Attention Model")
+    model = BiLSTM_with_Attention()
     model.fit(train_texts,train_labels)
     accuracy=model.predict(test_texts, test_labels)
     print(f'Test accuracy: {accuracy * 100:.2f}%')
 
-    print("Implementing LSTM with Attention and Word Embedding Model")
-    model = LSTM_with_Attention_WE()
+    print("Implementing BiLSTM with Attention and Word Embedding Model")
+    model = BiLSTM_with_Attention_WE()
     model.fit(train_texts,train_labels)
     accuracy=model.predict(test_texts, test_labels)
     print(f'Test accuracy: {accuracy * 100:.2f}%')
